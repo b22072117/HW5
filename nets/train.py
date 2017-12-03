@@ -75,9 +75,9 @@ def main(argv=None):
 	# Call your model here
 	prediction = model_call( net, 
 	                         is_training, 
-						     initializer = tf.contrib.layers.variance_scaling_initializer(), 
-						     class_num   = CLASS_NUM, 
-						     scope       = Student_ID)
+	                         initializer = tf.contrib.layers.variance_scaling_initializer(), 
+	                         class_num   = CLASS_NUM, 
+	                         scope       = Student_ID)
 	
 	#---------------------#
 	#    Loss Function    #
@@ -148,10 +148,10 @@ def main(argv=None):
 				
 				# Run Optimization
 				_, y_pre, Loss = sess.run([train_step, prediction, loss],
-										   feed_dict={ xs: batch_xs,
-										   			   ys: batch_ys,
-										   			   lr: 1e-7,												
-										   			   is_training: True})
+				                          feed_dict={ xs: batch_xs,
+				                                      ys: batch_ys,
+				                                      lr: 1e-7,												
+				                                      is_training: True})
 				# Calculate Training Accuracy
 				prediction_top1 = np.argmax(y_pre, axis=-1)
 				correct_prediction_top1 = np.equal(prediction_top1, np.argmax(batch_ys, -1))
@@ -178,10 +178,10 @@ def main(argv=None):
 			"""
 			if (epoch+1)%10 == 0:
 				val_result, val_accuracy = utils.compute_accuracy( xs, ys, is_training, prediction, 
-												                   v_xs       = val_data,
-												                   v_ys       = val_target, 
-												                   batch_size = BATCH_SIZE, 
-												                   sess       = sess)
+				                                                   v_xs       = val_data,
+				                                                   v_ys       = val_target, 
+				                                                   batch_size = BATCH_SIZE, 
+				                                                   sess       = sess)
 				print("\033[0;32mValidation Accuracy\033[0m = {}" .format(val_accuracy))
 			"""
 			
