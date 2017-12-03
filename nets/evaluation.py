@@ -202,9 +202,9 @@ def main(argv=None):
 	net = xs
 	prediction = model_call( net, 
 	                         is_training, 
-						     initializer = tf.contrib.layers.variance_scaling_initializer(), 
-						     class_num   = CLASS_NUM, 
-						     scope       = Student_ID)
+	                         initializer = tf.contrib.layers.variance_scaling_initializer(), 
+	                         class_num   = CLASS_NUM, 
+	                         scope       = Student_ID)
 	
 	#-------------#
 	#    Saver    #
@@ -225,10 +225,10 @@ def main(argv=None):
 		
 		print("Testing ... ")
 		test_result, test_accuracy = compute_accuracy( xs, ys, is_training, prediction, 
-										               v_xs       = test_data,
-										               v_ys       = test_target, 
-										               batch_size = BATCH_SIZE, 
-										               sess       = sess)
+		                                               v_xs       = test_data,
+		                                               v_ys       = test_target, 
+		                                               batch_size = BATCH_SIZE, 
+		                                               sess       = sess)
 															 
 		print("\033[0;32mTesting Accuracy\033[0m = {}" .format(test_accuracy))
 		
