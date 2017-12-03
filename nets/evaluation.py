@@ -7,6 +7,7 @@ from scipy import misc
 import sys
 import os
 import time
+import pdb
 
 import model
 
@@ -191,8 +192,8 @@ def main(argv=None):
 	#    Placeholder    #
 	#-------------------#
 	data_shape = np.shape(test_data)
-	xs = tf.placeholder(dtype = tf.float32, shape = [BATCH_SIZE, data_shape[1], data_shape[2], data_shape[3]])
-	ys = tf.placeholder(dtype = tf.float32, shape = [BATCH_SIZE, data_shape[1], data_shape[2], CLASS_NUM])
+	xs = tf.placeholder(dtype = tf.float32, shape = [BATCH_SIZE, data_shape[1], data_shape[2], data_shape[3]], name = 'input')
+	ys = tf.placeholder(dtype = tf.float32, shape = [BATCH_SIZE, data_shape[1], data_shape[2], CLASS_NUM], name = 'output')
 	lr = tf.placeholder(dtype = tf.float32)
 	is_training = tf.placeholder(dtype = tf.bool)
 	
@@ -205,6 +206,22 @@ def main(argv=None):
 	                         initializer = tf.contrib.layers.variance_scaling_initializer(), 
 	                         class_num   = CLASS_NUM, 
 	                         scope       = Student_ID)
+	
+	#-------------------------#
+	#    Get All Variables    #
+	#-------------------------#
+	all_variables = tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES, scope=Student_ID)
+	# Model Size
+	Model_Size = 0
+	for iter, variable in enumerate(all_variables):
+		Model_Size += reduce(lambda x, y: x*y, variable.get_shape().as_list())
+		# See all your variables	
+		"""
+		print(variable)
+		"""
+	print("\033[0;36m=======================\033[0m")
+	print("\033[0;36m Model Size\033[0m = {}" .format(Model_Size))
+	print("\033[0;36m=======================\033[0m")
 	
 	#-------------#
 	#    Saver    #

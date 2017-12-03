@@ -109,6 +109,22 @@ def main(argv=None):
 	gra_and_var = opt.compute_gradients(loss)
 	train_step  = opt.apply_gradients(gra_and_var)
 	
+	#-------------------------#
+	#    Get All Variables    #
+	#-------------------------#
+	all_variables = tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES, scope=Student_ID)
+	# Model Size
+	Model_Size = 0
+	for iter, variable in enumerate(all_variables):
+		Model_Size += reduce(lambda x, y: x*y, variable.get_shape().as_list())
+		# See all your variables	
+		"""
+		print(variable)
+		"""
+	print("\033[0;36m=======================\033[0m")
+	print("\033[0;36m Model Size\033[0m = {}" .format(Model_Size))
+	print("\033[0;36m=======================\033[0m")
+	
 	#-------------#
 	#    Saver    #
 	#-------------#
