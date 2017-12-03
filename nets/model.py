@@ -54,11 +54,12 @@ def conv2D(
 		tf.add_to_collection("weights", weights)
 		
 		# Convolution  
-		net = tf.nn.conv2d( input = net, 
-                    		filter = weights,
-                    		strides = [1, strides, strides, 1],
-                    		padding = padding,
-                    		name    = 'conv')
+		net = tf.nn.conv2d( input   = net, 
+		                    filter  = weights,
+		                    strides = [1, strides, strides, 1],
+		                    padding = padding,
+		                    name    = 'conv')
+
 		# Add Biases
 		net = tf.nn.bias_add(net, biases)
 		
