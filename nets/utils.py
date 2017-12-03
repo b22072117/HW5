@@ -130,9 +130,9 @@ def compute_accuracy(
 		v_ys_part = v_ys[iter*batch_size:(iter+1)*batch_size, :]
 		
 		y_pre = sess.run( prediction, 
-					      feed_dict={ xs: v_xs_part, 
-					      			  ys: v_ys_part,											
-					      			  is_training: False})
+		                  feed_dict={ xs: v_xs_part, 
+		                              ys: v_ys_part,											
+		                              is_training: False})
 		
 		
 		prediction_top1 = np.argsort(-y_pre, axis=-1)[:, :, :, 0]
