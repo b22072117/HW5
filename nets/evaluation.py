@@ -233,7 +233,7 @@ def main(argv=None):
 		print("\033[0;32mTesting Accuracy\033[0m = {}" .format(test_accuracy))
 		
 		# Save the test result to the image
-		# If you use this code, you can see the images at 
+		# If you use this code, you can see the predict images at 
 		# ->  /nets/CamVid_Y_pre/testannot/
 		# (Optional)
 		"""

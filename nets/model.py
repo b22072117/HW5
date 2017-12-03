@@ -186,7 +186,7 @@ def your_own_model( # Rename it to your student ID
 
 	return net
 
-def SegNet(
+def ID_0550225( # SegNet
 	net, 
 	is_training,
 	initializer,

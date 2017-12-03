@@ -15,9 +15,11 @@ import model
 #========================#
 #    Global Parameter    #
 #========================#
+Student_ID = sys.argv[1]
+model_call = getattr(model, Student_ID) # using string to call function
 BATCH_SIZE = 4
 CLASS_NUM  = 12
-EPOCH = 2
+EPOCH = 50
 Dataset_Path = '../datasets/CamVid'
 
 
@@ -71,11 +73,11 @@ def main(argv=None):
 	#-------------#
 	net = xs
 	# Call your model here
-	prediction = model.SegNet( net, 
-	                           is_training, 
-						       initializer = tf.contrib.layers.variance_scaling_initializer(), 
-						       class_num   = CLASS_NUM, 
-						       scope       = "SegNet")
+	prediction = model_call( net, 
+	                         is_training, 
+						     initializer = tf.contrib.layers.variance_scaling_initializer(), 
+						     class_num   = CLASS_NUM, 
+						     scope       = Student_ID)
 	
 	#---------------------#
 	#    Loss Function    #
@@ -187,7 +189,7 @@ def main(argv=None):
 		#    Save Trained Weights    #
 		#----------------------------#
 		print("Saving Trained Weights ... ")
-		save_path = saver.save(sess, "SegNet.ckpt")
+		save_path = saver.save(sess, Student_ID + ".ckpt")
 		print(save_path)
 			
 if __name__ == "__main__":
