@@ -42,26 +42,26 @@ def conv2D(
 	with tf.variable_scope(scope):
 		# Define Weights Variable
 		weights = tf.get_variable( name        = "weights", 
-		                           shape       = [kernel_size, kernel_size, input_channel, output_channel],
-								   dtype       = tf.float32,
-								   initializer = initializer)
+                                   shape       = [kernel_size, kernel_size, input_channel, output_channel],
+                                   dtype       = tf.float32,
+                                   initializer = initializer)
 		# Define Biases Variable
 		#biases = tf.Variable( initial_value = tf.constant(value = 0.0, shape = [output_channel], dtype = tf.float32), 
 		#                      trainable     = True, 
 		#					  name           = 'biases')				
 		biases = tf.get_variable( name        = "biases", 
-		                          shape       = [output_channel],
-								  dtype       = tf.float32,
-								  initializer = initializer)
+                                  shape       = [output_channel],
+                                  dtype       = tf.float32,
+                                  initializer = initializer)
 		
 		tf.add_to_collection("weights", weights)
 		
 		# Convolution  
 		net = tf.nn.conv2d( input = net, 
-		                    filter = weights,
-							strides = [1, strides, strides, 1],
-							padding = padding,
-							name    = 'conv')
+                            filter = weights,
+                            strides = [1, strides, strides, 1],
+                            padding = padding,
+                            name    = 'conv')
 		# Add Biases
 		net = tf.nn.bias_add(net, biases)
 		
@@ -93,10 +93,10 @@ def max_pooling(
 	
 	# Detail : https://www.tensorflow.org/api_docs/python/tf/nn/max_pool_with_argmax
 	net, indices = tf.nn.max_pool_with_argmax( input   = net,
-		                                       ksize   = [1, kernel_size, kernel_size, 1],
-							                   strides = [1, strides, strides, 1],
-							                   padding = padding,
-							                   name    = 'max_pool')
+                                               ksize   = [1, kernel_size, kernel_size, 1],
+                                               strides = [1, strides, strides, 1],
+                                               padding = padding,
+                                               name    = 'max_pool')
 	return net, indices, input_shape
 
 def max_unpooling(
@@ -196,12 +196,12 @@ def ID_0550225( # SegNet
 	with tf.variable_scope(scope):
 		with tf.variable_scope("layer0"):
 			net = conv2D( net,
-						  kernel_size    = 3,
-						  strides        = 1, 
-						  output_channel = 64,
-						  initializer    = initializer, 
-						  padding        = "SAME", 
-						  scope          = "conv3x3")
+                          kernel_size    = 3,
+                          strides        = 1, 
+                          output_channel = 64,
+                          initializer    = initializer, 
+                          padding        = "SAME", 
+                          scope          = "conv3x3")
 						  
 			net = batch_norm(net, is_training = is_training)
 							  
@@ -209,12 +209,12 @@ def ID_0550225( # SegNet
 							 
 		with tf.variable_scope("layer1"): # With Pooling
 			net = conv2D( net,
-						  kernel_size    = 3,
-						  strides        = 1, 
-						  output_channel = 64,
-						  initializer    = initializer, 
-						  padding        = "SAME", 
-						  scope          = "conv3x3")
+                          kernel_size    = 3,
+                          strides        = 1, 
+                          output_channel = 64,
+                          initializer    = initializer, 
+                          padding        = "SAME", 
+                          scope          = "conv3x3")
 						  
 			net = batch_norm(net, is_training = is_training)
 							  
@@ -224,12 +224,12 @@ def ID_0550225( # SegNet
 														
 		with tf.variable_scope("layer2"):
 			net = conv2D( net,
-						  kernel_size    = 3,
-						  strides        = 1, 
-						  output_channel = 128,
-						  initializer    = initializer, 
-						  padding        = "SAME", 
-						  scope          = "conv3x3")
+                          kernel_size    = 3,
+                          strides        = 1, 
+                          output_channel = 128,
+                          initializer    = initializer, 
+                          padding        = "SAME", 
+                          scope          = "conv3x3")
 						  
 			net = batch_norm(net, is_training = is_training)
 							  
@@ -237,12 +237,12 @@ def ID_0550225( # SegNet
 		
 		with tf.variable_scope("layer3"): # With Pooling
 			net = conv2D( net,
-						  kernel_size    = 3,
-						  strides        = 1, 
-						  output_channel = 128,
-						  initializer    = initializer, 
-						  padding        = "SAME", 
-						  scope          = "conv3x3")
+                          kernel_size    = 3,
+                          strides        = 1, 
+                          output_channel = 128,
+                          initializer    = initializer, 
+                          padding        = "SAME", 
+                          scope          = "conv3x3")
 						  
 			net = batch_norm(net, is_training = is_training)
 							  
@@ -252,12 +252,12 @@ def ID_0550225( # SegNet
 
 		with tf.variable_scope("layer4"):
 			net = conv2D( net,
-						  kernel_size    = 3,
-						  strides        = 1, 
-						  output_channel = 256,
-						  initializer    = initializer, 
-						  padding        = "SAME", 
-						  scope          = "conv3x3")
+                          kernel_size    = 3,
+                          strides        = 1, 
+                          output_channel = 256,
+                          initializer    = initializer, 
+                          padding        = "SAME", 
+                          scope          = "conv3x3")
 						  
 			net = batch_norm(net, is_training = is_training)
 							  
@@ -265,12 +265,12 @@ def ID_0550225( # SegNet
 
 		with tf.variable_scope("layer5"):
 			net = conv2D( net,
-						  kernel_size    = 3,
-						  strides        = 1, 
-						  output_channel = 256,
-						  initializer    = initializer, 
-						  padding        = "SAME", 
-						  scope          = "conv3x3")
+                          kernel_size    = 3,
+                          strides        = 1, 
+                          output_channel = 256,
+                          initializer    = initializer, 
+                          padding        = "SAME", 
+                          scope          = "conv3x3")
 						  
 			net = batch_norm(net, is_training = is_training)
 							  
@@ -278,12 +278,12 @@ def ID_0550225( # SegNet
 
 		with tf.variable_scope("layer6"): # With Pooling
 			net = conv2D( net,
-						  kernel_size    = 3,
-						  strides        = 1, 
-						  output_channel = 256,
-						  initializer    = initializer, 
-						  padding        = "SAME", 
-						  scope          = "conv3x3")
+                          kernel_size    = 3,
+                          strides        = 1, 
+                          output_channel = 256,
+                          initializer    = initializer, 
+                          padding        = "SAME", 
+                          scope          = "conv3x3")
 						  
 			net = batch_norm(net, is_training = is_training)
 							  
@@ -293,12 +293,12 @@ def ID_0550225( # SegNet
 		
 		with tf.variable_scope("layer7"):
 			net = conv2D( net,
-						  kernel_size    = 3,
-						  strides        = 1, 
-						  output_channel = 512,
-						  initializer    = initializer, 
-						  padding        = "SAME", 
-						  scope          = "conv3x3")
+                          kernel_size    = 3,
+                          strides        = 1, 
+                          output_channel = 512,
+                          initializer    = initializer, 
+                          padding        = "SAME", 
+                          scope          = "conv3x3")
 						  
 			net = batch_norm(net, is_training = is_training)
 							  
@@ -306,12 +306,12 @@ def ID_0550225( # SegNet
 
 		with tf.variable_scope("layer8"):
 			net = conv2D( net,
-						  kernel_size    = 3,
-						  strides        = 1, 
-						  output_channel = 512,
-						  initializer    = initializer, 
-						  padding        = "SAME", 
-						  scope          = "conv3x3")
+                          kernel_size    = 3,
+                          strides        = 1, 
+                          output_channel = 512,
+                          initializer    = initializer, 
+                          padding        = "SAME", 
+                          scope          = "conv3x3")
 						  
 			net = batch_norm(net, is_training = is_training)
 							  
@@ -319,12 +319,12 @@ def ID_0550225( # SegNet
 
 		with tf.variable_scope("layer9"): # With Pooling
 			net = conv2D( net,
-						  kernel_size    = 3,
-						  strides        = 1, 
-						  output_channel = 512,
-						  initializer    = initializer, 
-						  padding        = "SAME", 
-						  scope          = "conv3x3")
+                          kernel_size    = 3,
+                          strides        = 1, 
+                          output_channel = 512,
+                          initializer    = initializer, 
+                          padding        = "SAME", 
+                          scope          = "conv3x3")
 						  
 			net = batch_norm(net, is_training = is_training)
 							  
@@ -334,12 +334,12 @@ def ID_0550225( # SegNet
 
 		with tf.variable_scope("layer10"):
 			net = conv2D( net,
-						  kernel_size    = 3,
-						  strides        = 1, 
-						  output_channel = 512,
-						  initializer    = initializer, 
-						  padding        = "SAME", 
-						  scope          = "conv3x3")
+                          kernel_size    = 3,
+                          strides        = 1, 
+                          output_channel = 512,
+                          initializer    = initializer, 
+                          padding        = "SAME", 
+                          scope          = "conv3x3")
 						  
 			net = batch_norm(net, is_training = is_training)
 							  
@@ -347,12 +347,12 @@ def ID_0550225( # SegNet
 
 		with tf.variable_scope("layer11"):
 			net = conv2D( net,
-						  kernel_size    = 3,
-						  strides        = 1, 
-						  output_channel = 512,
-						  initializer    = initializer, 
-						  padding        = "SAME", 
-						  scope          = "conv3x3")
+                          kernel_size    = 3,
+                          strides        = 1, 
+                          output_channel = 512,
+                          initializer    = initializer, 
+                          padding        = "SAME", 
+                          scope          = "conv3x3")
 						  
 			net = batch_norm(net, is_training = is_training)
 							  
@@ -360,12 +360,12 @@ def ID_0550225( # SegNet
 
 		with tf.variable_scope("layer12"): # With Pooling
 			net = conv2D( net,
-						  kernel_size    = 3,
-						  strides        = 1, 
-						  output_channel = 512,
-						  initializer    = initializer, 
-						  padding        = "SAME", 
-						  scope          = "conv3x3")
+                          kernel_size    = 3,
+                          strides        = 1, 
+                          output_channel = 512,
+                          initializer    = initializer, 
+                          padding        = "SAME", 
+                          scope          = "conv3x3")
 						  
 			net = batch_norm(net, is_training = is_training)
 							  
@@ -377,12 +377,12 @@ def ID_0550225( # SegNet
 			net = max_unpooling(net, output_shape = unpool_shape4, indices = indices4)
 			
 			net = conv2D( net,
-						  kernel_size    = 3,
-						  strides        = 1, 
-						  output_channel = 512,
-						  initializer    = initializer, 
-						  padding        = "SAME", 
-						  scope          = "conv3x3")
+                          kernel_size    = 3,
+                          strides        = 1, 
+                          output_channel = 512,
+                          initializer    = initializer, 
+                          padding        = "SAME", 
+                          scope          = "conv3x3")
 						  
 			net = batch_norm(net, is_training = is_training)
 							  
@@ -390,12 +390,12 @@ def ID_0550225( # SegNet
 				
 		with tf.variable_scope("layer14"):
 			net = conv2D( net,
-						  kernel_size    = 3,
-						  strides        = 1, 
-						  output_channel = 512,
-						  initializer    = initializer, 
-						  padding        = "SAME", 
-						  scope          = "conv3x3")
+                          kernel_size    = 3,
+                          strides        = 1, 
+                          output_channel = 512,
+                          initializer    = initializer, 
+                          padding        = "SAME", 
+                          scope          = "conv3x3")
 						  
 			net = batch_norm(net, is_training = is_training)
 							  
@@ -403,12 +403,12 @@ def ID_0550225( # SegNet
 		
 		with tf.variable_scope("layer15"):
 			net = conv2D( net,
-						  kernel_size    = 3,
-						  strides        = 1, 
-						  output_channel = 512,
-						  initializer    = initializer, 
-						  padding        = "SAME", 
-						  scope          = "conv3x3")
+                          kernel_size    = 3,
+                          strides        = 1, 
+                          output_channel = 512,
+                          initializer    = initializer, 
+                          padding        = "SAME", 
+                          scope          = "conv3x3")
 						  
 			net = batch_norm(net, is_training = is_training)
 							  
@@ -418,12 +418,12 @@ def ID_0550225( # SegNet
 			net = max_unpooling(net, output_shape = unpool_shape3, indices = indices3)
 			
 			net = conv2D( net,
-						  kernel_size    = 3,
-						  strides        = 1, 
-						  output_channel = 512,
-						  initializer    = initializer, 
-						  padding        = "SAME", 
-						  scope          = "conv3x3")
+                          kernel_size    = 3,
+                          strides        = 1, 
+                          output_channel = 512,
+                          initializer    = initializer, 
+                          padding        = "SAME", 
+                          scope          = "conv3x3")
 						  
 			net = batch_norm(net, is_training = is_training)
 							  
@@ -431,12 +431,12 @@ def ID_0550225( # SegNet
 				
 		with tf.variable_scope("layer17"):
 			net = conv2D( net,
-						  kernel_size    = 3,
-						  strides        = 1, 
-						  output_channel = 512,
-						  initializer    = initializer, 
-						  padding        = "SAME", 
-						  scope          = "conv3x3")
+                          kernel_size    = 3,
+                          strides        = 1, 
+                          output_channel = 512,
+                          initializer    = initializer, 
+                          padding        = "SAME", 
+                          scope          = "conv3x3")
 						  
 			net = batch_norm(net, is_training = is_training)
 							  
@@ -444,12 +444,12 @@ def ID_0550225( # SegNet
 		
 		with tf.variable_scope("layer18"):
 			net = conv2D( net,
-						  kernel_size    = 3,
-						  strides        = 1, 
-						  output_channel = 256,
-						  initializer    = initializer, 
-						  padding        = "SAME", 
-						  scope          = "conv3x3")
+                          kernel_size    = 3,
+                          strides        = 1, 
+                          output_channel = 256,
+                          initializer    = initializer, 
+                          padding        = "SAME", 
+                          scope          = "conv3x3")
 						  
 			net = batch_norm(net, is_training = is_training)
 							  
@@ -459,12 +459,12 @@ def ID_0550225( # SegNet
 			net = max_unpooling(net, output_shape = unpool_shape2, indices = indices2)
 			
 			net = conv2D( net,
-						  kernel_size    = 3,
-						  strides        = 1, 
-						  output_channel = 256,
-						  initializer    = initializer, 
-						  padding        = "SAME", 
-						  scope          = "conv3x3")
+                          kernel_size    = 3,
+                          strides        = 1, 
+                          output_channel = 256,
+                          initializer    = initializer, 
+                          padding        = "SAME", 
+                          scope          = "conv3x3")
 						  
 			net = batch_norm(net, is_training = is_training)
 							  
@@ -472,12 +472,12 @@ def ID_0550225( # SegNet
 
 		with tf.variable_scope("layer20"):
 			net = conv2D( net,
-						  kernel_size    = 3,
-						  strides        = 1, 
-						  output_channel = 256,
-						  initializer    = initializer, 
-						  padding        = "SAME", 
-						  scope          = "conv3x3")
+                          kernel_size    = 3,
+                          strides        = 1, 
+                          output_channel = 256,
+                          initializer    = initializer, 
+                          padding        = "SAME", 
+                          scope          = "conv3x3")
 						  
 			net = batch_norm(net, is_training = is_training)
 							  
@@ -485,12 +485,12 @@ def ID_0550225( # SegNet
 			
 		with tf.variable_scope("layer21"):
 			net = conv2D( net,
-						  kernel_size    = 3,
-						  strides        = 1, 
-						  output_channel = 128,
-						  initializer    = initializer, 
-						  padding        = "SAME", 
-						  scope          = "conv3x3")
+                          kernel_size    = 3,
+                          strides        = 1, 
+                          output_channel = 128,
+                          initializer    = initializer, 
+                          padding        = "SAME", 
+                          scope          = "conv3x3")
 						  
 			net = batch_norm(net, is_training = is_training)
 							  
@@ -500,12 +500,12 @@ def ID_0550225( # SegNet
 			net = max_unpooling(net, output_shape = unpool_shape1, indices = indices1)
 			
 			net = conv2D( net,
-						  kernel_size    = 3,
-						  strides        = 1, 
-						  output_channel = 128,
-						  initializer    = initializer, 
-						  padding        = "SAME", 
-						  scope          = "conv3x3")
+                          kernel_size    = 3,
+                          strides        = 1, 
+                          output_channel = 128,
+                          initializer    = initializer, 
+                          padding        = "SAME", 
+                          scope          = "conv3x3")
 						  
 			net = batch_norm(net, is_training = is_training)
 							  
@@ -513,12 +513,12 @@ def ID_0550225( # SegNet
 
 		with tf.variable_scope("layer23"):
 			net = conv2D( net,
-						  kernel_size    = 3,
-						  strides        = 1, 
-						  output_channel = 64,
-						  initializer    = initializer, 
-						  padding        = "SAME", 
-						  scope          = "conv3x3")
+                          kernel_size    = 3,
+                          strides        = 1, 
+                          output_channel = 64,
+                          initializer    = initializer, 
+                          padding        = "SAME", 
+                          scope          = "conv3x3")
 						  
 			net = batch_norm(net, is_training = is_training)
 							  
@@ -528,12 +528,12 @@ def ID_0550225( # SegNet
 			net = max_unpooling(net, output_shape = unpool_shape0, indices = indices0)
 			
 			net = conv2D( net,
-						  kernel_size    = 3,
-						  strides        = 1, 
-						  output_channel = 64,
-						  initializer    = initializer, 
-						  padding        = "SAME", 
-						  scope          = "conv3x3")
+                          kernel_size    = 3,
+                          strides        = 1, 
+                          output_channel = 64,
+                          initializer    = initializer, 
+                          padding        = "SAME", 
+                          scope          = "conv3x3")
 						  
 			net = batch_norm(net, is_training = is_training)
 							  
@@ -543,12 +543,12 @@ def ID_0550225( # SegNet
 			
 		with tf.variable_scope("layer25"):
 			net = conv2D( net,
-						  kernel_size    = 3,
-						  strides        = 1, 
-						  output_channel = class_num,
-						  initializer    = initializer, 
-						  padding        = "SAME", 
-						  scope          = "conv3x3")
+                          kernel_size    = 3,
+                          strides        = 1, 
+                          output_channel = class_num,
+                          initializer    = initializer, 
+                          padding        = "SAME", 
+                          scope          = "conv3x3")
 						  
 			net = tf.nn.relu(features = net, name = "ReLU")
 	return net
