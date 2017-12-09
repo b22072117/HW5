@@ -171,97 +171,98 @@ def compute_accuracy(
 #    main    #
 #============#
 def main(argv=None):
-	#---------------#
-	#    Dataset    #
-	#---------------#
-	#*****************#
-	#    test data    #
-	#*****************#
-	print("Loading testing data ... ")
-	# read index
-	test_data_index    = open(Dataset_Path + '/test.txt'      , 'r').read().splitlines()
-	test_target_index  = open(Dataset_Path + '/testannot.txt' , 'r').read().splitlines()
-	# read images
-	test_data, test_target = CamVid_dataset_parser(Dataset_Path, test_data_index, test_target_index)
-	# one-hot target
-	test_target = one_hot(target = test_target, class_num = CLASS_NUM)
-	print("\033[0;32mTest Data Number\033[0m  = {}" .format( np.shape(test_data)[0]   ))
-	print("\033[0;32mTest Data Shape \033[0m  = {}" .format( np.shape(test_data)[1:4] )) # [Height, Width, Depth]
-	
-	#-------------------#
-	#    Placeholder    #
-	#-------------------#
-	data_shape = np.shape(test_data)
-	xs = tf.placeholder(dtype = tf.float32, shape = [BATCH_SIZE, data_shape[1], data_shape[2], data_shape[3]], name = 'input')
-	ys = tf.placeholder(dtype = tf.float32, shape = [BATCH_SIZE, data_shape[1], data_shape[2], CLASS_NUM], name = 'output')
-	lr = tf.placeholder(dtype = tf.float32)
-	is_training = tf.placeholder(dtype = tf.bool)
-	
-	#-------------#
-	#    Model    #
-	#-------------#
-	net = xs
-	prediction = model_call( net, 
-	                         is_training, 
-	                         initializer = tf.contrib.layers.variance_scaling_initializer(), 
-	                         class_num   = CLASS_NUM, 
-	                         scope       = Student_ID)
-	
-	#-------------------------#
-	#    Get All Variables    #
-	#-------------------------#
-	all_variables = tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES, scope=Student_ID)
-	# Model Size
-	Model_Size = 0
-	for iter, variable in enumerate(all_variables):
-		Model_Size += reduce(lambda x, y: x*y, variable.get_shape().as_list())
-		# See all your variables	
-		"""
-		print(variable)
-		"""
-	print("\033[0;36m=======================\033[0m")
-	print("\033[0;36m Model Size\033[0m = {}" .format(Model_Size))
-	print("\033[0;36m=======================\033[0m")
-	
-	#-------------#
-	#    Saver    #
-	#-------------#
-	saver = tf.train.Saver()
-	
-	#---------------#
-	#    Session    #
-	#---------------#
-	with tf.Session() as sess:
-		# Initial all tensor variables
-		init = tf.global_variables_initializer()
-		sess.run(init)
-		
-		# Loading trained weights
-		print("Loading trained weights ...")
-		saver.restore(sess, Student_ID + ".ckpt")
-		
-		print("Testing ... ")
-		test_result, test_accuracy = compute_accuracy( xs, ys, is_training, prediction, 
-		                                               v_xs       = test_data,
-		                                               v_ys       = test_target, 
-		                                               batch_size = BATCH_SIZE, 
-		                                               sess       = sess)
-															 
-		print("\033[0;32mTesting Accuracy\033[0m = {}" .format(test_accuracy))
-		
-		# Save the test result to the image
-		# If you use this code, you can see the predict images at 
-		# ->  /nets/CamVid_Y_pre/testannot/
-		# (Optional)
-		"""
-		save_CamVid_result_as_image(
-			result     = test_result, 
-			path       = 'CamVid_Y_pre',
-			file_index = test_target_index)
-		"""
+    #---------------#
+    #    Dataset    #
+    #---------------#
+    #*****************#
+    #    test data    #
+    #*****************#
+    print("Loading testing data ... ")
+    # read index
+    test_data_index    = open(Dataset_Path + '/test.txt'      , 'r').read().splitlines()
+    test_target_index  = open(Dataset_Path + '/testannot.txt' , 'r').read().splitlines()
+    # read images
+    test_data, test_target = CamVid_dataset_parser(Dataset_Path, test_data_index, test_target_index)
+    # one-hot target
+    test_target = one_hot(target = test_target, class_num = CLASS_NUM)
+    print("\033[0;32mTest Data Number\033[0m  = {}" .format( np.shape(test_data)[0]   ))
+    print("\033[0;32mTest Data Shape \033[0m  = {}" .format( np.shape(test_data)[1:4] )) # [Height, Width, Depth]
+    
+    #-------------------#
+    #    Placeholder    #
+    #-------------------#
+    data_shape = np.shape(test_data)
+    xs = tf.placeholder(dtype = tf.float32, shape = [BATCH_SIZE, data_shape[1], data_shape[2], data_shape[3]], name = 'input')
+    ys = tf.placeholder(dtype = tf.float32, shape = [BATCH_SIZE, data_shape[1], data_shape[2], CLASS_NUM], name = 'output')
+    lr = tf.placeholder(dtype = tf.float32)
+    is_training = tf.placeholder(dtype = tf.bool)
+    
+    #-------------#
+    #    Model    #
+    #-------------#
+    net = xs
+    prediction = model_call( net, 
+                             is_training, 
+                             initializer = tf.contrib.layers.variance_scaling_initializer(), 
+                             class_num   = CLASS_NUM, 
+                             scope       = Student_ID)
+    
+    #-------------------------#
+    #    Get All Variables    #
+    #-------------------------#
+    all_variables = tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES, scope=Student_ID)
+    # Model Size
+    Model_Size = 0
+    for iter, variable in enumerate(all_variables):
+        Model_Size += reduce(lambda x, y: x*y, variable.get_shape().as_list())
+        # See all your variables	
+        """
+        print(variable)
+        """
+    print("\033[0;36m=======================\033[0m")
+    print("\033[0;36m Model Size\033[0m = {}" .format(Model_Size))
+    print("\033[0;36m=======================\033[0m")
+    
+    #-------------#
+    #    Saver    #
+    #-------------#
+    saver = tf.train.Saver()
+    
+    #---------------#
+    #    Session    #
+    #---------------#
+    with tf.Session() as sess:
+        # Initial all tensor variables
+        init = tf.global_variables_initializer()
+        sess.run(init)
+        
+        # Loading trained weights
+        print("Loading trained weights ...")
+        print(os.path.join(os.getcwd(), Student_ID + ".ckpt"))
+        saver.restore(sess, os.path.join(os.getcwd(), Student_ID + ".ckpt"))
+        
+        print("Testing ... ")
+        test_result, test_accuracy = compute_accuracy( xs, ys, is_training, prediction, 
+                                                       v_xs       = test_data,
+                                                       v_ys       = test_target, 
+                                                       batch_size = BATCH_SIZE, 
+                                                       sess       = sess)
+                                                            
+        print("\033[0;32mTesting Accuracy\033[0m = {}" .format(test_accuracy))
+        
+        # Save the test result to the image
+        # If you use this code, you can see the predict images at 
+        # ->  /nets/CamVid_Y_pre/testannot/
+        # (Optional)
+        """
+        save_CamVid_result_as_image(
+            result     = test_result, 
+            path       = 'CamVid_Y_pre',
+            file_index = test_target_index)
+        """
 			
 if __name__ == "__main__":
-	tf.app.run(main, sys.argv)
+    tf.app.run(main, sys.argv)
 	
 	
 	

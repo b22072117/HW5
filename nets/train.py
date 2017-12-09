@@ -17,9 +17,9 @@ import model
 #========================#
 Student_ID = sys.argv[1]
 model_call = getattr(model, Student_ID) # using string to call function
-BATCH_SIZE = 4
+BATCH_SIZE = 8
 CLASS_NUM  = 12
-EPOCH = 50
+EPOCH = 100
 Dataset_Path = '../datasets/CamVid'
 
 
@@ -41,7 +41,7 @@ def main(argv=None):
 	train_data, train_target = utils.CamVid_dataset_parser(Dataset_Path, train_data_index, train_target_index)
 	# one-hot target
 	train_target = utils.one_hot(target = train_target, class_num = CLASS_NUM)
-	print("\033[0;32mTrain Data Number\033[0m = {}" .format( np.shape(train_data)[0]   ))
+	print("\033[0;32mTrain Data Number\033[0m = {}" .format( np.shape(train_data)[0]   )) # Image Number
 	print("\033[0;32mTrain Data Shape \033[0m = {}" .format( np.shape(train_data)[1:4] )) # [Height, Width, Depth]
 	
 	#****************#
@@ -55,17 +55,25 @@ def main(argv=None):
 	val_data, val_target = utils.CamVid_dataset_parser(Dataset_Path, val_data_index, val_target_index)
 	# one-hot target
 	val_target = utils.one_hot(target = val_target, class_num = CLASS_NUM)
-	print("\033[0;32mVal Data Number\033[0m   = {}" .format( np.shape(val_data)[0]   ))
+	print("\033[0;32mVal Data Number\033[0m   = {}" .format( np.shape(val_data)[0]   )) # Image Number
 	print("\033[0;32mVal Data Shape \033[0m   = {}" .format( np.shape(val_data)[1:4] )) # [Height, Width, Depth]
 	
 		
 	#-------------------#
 	#    Placeholder    #
 	#-------------------#
-	data_shape = np.shape(train_data)
-	xs = tf.placeholder(dtype = tf.float32, shape = [BATCH_SIZE, data_shape[1], data_shape[2], data_shape[3]])
+	data_shape = np.shape(train_data) 
+
+    # Input placeholder, Shape = [Batch Size, Image Height, Image Width, Image Depth]
+	xs = tf.placeholder(dtype = tf.float32, shape = [BATCH_SIZE, data_shape[1], data_shape[2], data_shape[3]]) 
+    
+    # Output placeholder, Shape = [Batch Size, Image Height, Image Width, Class Number]
 	ys = tf.placeholder(dtype = tf.float32, shape = [BATCH_SIZE, data_shape[1], data_shape[2], CLASS_NUM])
+
+    # Learning Rate
 	lr = tf.placeholder(dtype = tf.float32)
+    
+    # 
 	is_training = tf.placeholder(dtype = tf.bool)
 	
 	#-------------#
@@ -82,12 +90,12 @@ def main(argv=None):
 	#---------------------#
 	#    Loss Function    #
 	#---------------------#
-	# (Optional) You can choose another loss function
+	# (Optional) You can choose another loss function or define by yourself
 	# i.e. Cross Entropy : https://www.tensorflow.org/api_docs/python/tf/nn/sparse_softmax_cross_entropy_with_logits
 	cross_entropy = tf.nn.sparse_softmax_cross_entropy_with_logits(labels = tf.argmax(ys, -1), logits = prediction)
 	
 	# L2_norm
-	# (Optional)
+	# (Optional) 
 	weights_collection = tf.get_collection("weights")
 	l2_norm   = tf.reduce_mean(tf.stack([tf.nn.l2_loss(x) for x in weights_collection]))
 	l2_lambda = tf.constant(0.9)
@@ -103,21 +111,26 @@ def main(argv=None):
 	#-----------------------------------#
 	#    Weight Optimization Strategy   #
 	#-----------------------------------#
-	# (Optional) You can choose another optimizer
+	# (Optional) You can choose another optimizer or define by your self
 	# i.e. SGD : https://www.tensorflow.org/api_docs/python/tf/train/GradientDescentOptimizer
 	opt = tf.train.GradientDescentOptimizer(learning_rate = lr)
+    
+    # Compute Gradients
 	gra_and_var = opt.compute_gradients(loss)
+
+    # Apply Gradients
 	train_step  = opt.apply_gradients(gra_and_var)
 	
-	#-------------------------#
-	#    Get All Variables    #
-	#-------------------------#
+	#--------------------------#
+	#    Compute Model Size    #
+	#--------------------------#
+    # Your grade will depend on this value.
 	all_variables = tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES, scope=Student_ID)
 	# Model Size
 	Model_Size = 0
 	for iter, variable in enumerate(all_variables):
 		Model_Size += reduce(lambda x, y: x*y, variable.get_shape().as_list())
-		# See all your variables	
+		# See all your variables in termainl	
 		"""
 		print(variable)
 		"""
@@ -205,7 +218,7 @@ def main(argv=None):
 		#    Save Trained Weights    #
 		#----------------------------#
 		print("Saving Trained Weights ... ")
-		save_path = saver.save(sess, Student_ID + ".ckpt")
+		save_path = saver.save(sess, os.path.join(os.getcwd(), Student_ID + '.ckpt'))
 		print(save_path)
 			
 if __name__ == "__main__":

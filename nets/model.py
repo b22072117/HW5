@@ -134,7 +134,7 @@ def max_unpooling(
 
 def batch_norm(
 	net,
-	is_training
+    scope
 	):
 	
 	"""
@@ -142,7 +142,6 @@ def batch_norm(
 	
 	Args:
 	(1) net         : Input. An 4D tensor. Shape=[Batch_Size, Image_Height, Image_Width, Image_Depth]
-    (2) is_training : A 1-D bool type placeholder tensor.
 	
 	Return:
 	(1) net : An output tensor after max unpooling.
@@ -168,7 +167,7 @@ def batch_norm(
 	   			 fused                  = False,
 	   			 #data_format           = DATA_FORMAT_NHWC,
 	   			 zero_debias_moving_mean= False,
-	   			 scope                  = "batch_norm",
+	   			 scope                  = scope,
 	   			 renorm                 = False,
 	   			 renorm_clipping        = None,
 	   			 renorm_decay           = 0.99)
@@ -178,377 +177,274 @@ def batch_norm(
 #============#
 #    Model   #
 #============#
-def your_own_model( # Rename it to your student ID
-	net, 
-	):
-
+def your_own_model( # name it with "ID_{StudentID}"
+    net,
+    scope
+    ):
+    
+    with tf.variable_scope(scope):
+    
 	return net
 
-def ID_0550225( # SegNet
-	net, 
-	is_training,
-	initializer,
-	class_num,
-	scope=None
-	):
-	with tf.variable_scope(scope):
-		with tf.variable_scope("layer0"):
-			net = conv2D( net,
-			              kernel_size    = 3,
-			              strides        = 1, 
-			              output_channel = 64,
-			              initializer    = initializer, 
-			              padding        = "SAME", 
-			              scope          = "conv3x3")
-						  
-			net = batch_norm(net, is_training = is_training)
-							  
-			net = tf.nn.relu(features = net, name = "ReLU")		
-							 
-		with tf.variable_scope("layer1"): # With Pooling
-			net = conv2D( net,
-			              kernel_size    = 3,
-			              strides        = 1, 
-			              output_channel = 64,
-			              initializer    = initializer, 
-			              padding        = "SAME", 
-			              scope          = "conv3x3")
-						  
-			net = batch_norm(net, is_training = is_training)
-							  
-			net = tf.nn.relu(features = net, name = "ReLU")
-
-			net, indices0, unpool_shape0 = max_pooling(net, kernel_size = 2, strides = 2, padding = "SAME")
-														
-		with tf.variable_scope("layer2"):
-			net = conv2D( net,
-			              kernel_size    = 3,
-			              strides        = 1, 
-			              output_channel = 128,
-			              initializer    = initializer, 
-			              padding        = "SAME", 
-			              scope          = "conv3x3")
-						  
-			net = batch_norm(net, is_training = is_training)
-							  
-			net = tf.nn.relu(features = net, name = "ReLU")
-		
-		with tf.variable_scope("layer3"): # With Pooling
-			net = conv2D( net,
-			              kernel_size    = 3,
-			              strides        = 1, 
-			              output_channel = 128,
-			              initializer    = initializer, 
-			              padding        = "SAME", 
-			              scope          = "conv3x3")
-						  
-			net = batch_norm(net, is_training = is_training)
-							  
-			net = tf.nn.relu(features = net, name = "ReLU")
-
-			net, indices1, unpool_shape1 = max_pooling(net, kernel_size = 2, strides = 2, padding = "SAME")
-
-		with tf.variable_scope("layer4"):
-			net = conv2D( net,
-			              kernel_size    = 3,
-			              strides        = 1, 
-			              output_channel = 256,
-			              initializer    = initializer, 
-			              padding        = "SAME", 
-			              scope          = "conv3x3")
-						  
-			net = batch_norm(net, is_training = is_training)
-							  
-			net = tf.nn.relu(features = net, name = "ReLU")
-
-		with tf.variable_scope("layer5"):
-			net = conv2D( net,
-			              kernel_size    = 3,
-			              strides        = 1, 
-			              output_channel = 256,
-			              initializer    = initializer, 
-			              padding        = "SAME", 
-			              scope          = "conv3x3")
-						  
-			net = batch_norm(net, is_training = is_training)
-							  
-			net = tf.nn.relu(features = net, name = "ReLU")
-
-		with tf.variable_scope("layer6"): # With Pooling
-			net = conv2D( net,
-			              kernel_size    = 3,
-			              strides        = 1, 
-			              output_channel = 256,
-			              initializer    = initializer, 
-			              padding        = "SAME", 
-			              scope          = "conv3x3")
-						  
-			net = batch_norm(net, is_training = is_training)
-							  
-			net = tf.nn.relu(features = net, name = "ReLU")
-
-			net, indices2, unpool_shape2 = max_pooling(net, kernel_size = 2, strides = 2, padding = "SAME")
-		
-		with tf.variable_scope("layer7"):
-			net = conv2D( net,
-			              kernel_size    = 3,
-			              strides        = 1, 
-			              output_channel = 512,
-			              initializer    = initializer, 
-			              padding        = "SAME", 
-			              scope          = "conv3x3")
-						  
-			net = batch_norm(net, is_training = is_training)
-							  
-			net = tf.nn.relu(features = net, name = "ReLU")
-
-		with tf.variable_scope("layer8"):
-			net = conv2D( net,
-			              kernel_size    = 3,
-			              strides        = 1, 
-			              output_channel = 512,
-			              initializer    = initializer, 
-			              padding        = "SAME", 
-			              scope          = "conv3x3")
-						  
-			net = batch_norm(net, is_training = is_training)
-							  
-			net = tf.nn.relu(features = net, name = "ReLU")
-
-		with tf.variable_scope("layer9"): # With Pooling
-			net = conv2D( net,
-			              kernel_size    = 3,
-			              strides        = 1, 
-			              output_channel = 512,
-			              initializer    = initializer, 
-			              padding        = "SAME", 
-			              scope          = "conv3x3")
-						  
-			net = batch_norm(net, is_training = is_training)
-							  
-			net = tf.nn.relu(features = net, name = "ReLU")
-
-			net, indices3, unpool_shape3 = max_pooling(net, kernel_size = 2, strides = 2, padding = "SAME")
-
-		with tf.variable_scope("layer10"):
-			net = conv2D( net,
-			              kernel_size    = 3,
-			              strides        = 1, 
-			              output_channel = 512,
-			              initializer    = initializer, 
-			              padding        = "SAME", 
-			              scope          = "conv3x3")
-						  
-			net = batch_norm(net, is_training = is_training)
-							  
-			net = tf.nn.relu(features = net, name = "ReLU")
-
-		with tf.variable_scope("layer11"):
-			net = conv2D( net,
-			              kernel_size    = 3,
-			              strides        = 1, 
-			              output_channel = 512,
-			              initializer    = initializer, 
-			              padding        = "SAME", 
-			              scope          = "conv3x3")
-						  
-			net = batch_norm(net, is_training = is_training)
-							  
-			net = tf.nn.relu(features = net, name = "ReLU")
-
-		with tf.variable_scope("layer12"): # With Pooling
-			net = conv2D( net,
-			              kernel_size    = 3,
-			              strides        = 1, 
-			              output_channel = 512,
-			              initializer    = initializer, 
-			              padding        = "SAME", 
-			              scope          = "conv3x3")
-						  
-			net = batch_norm(net, is_training = is_training)
-							  
-			net = tf.nn.relu(features = net, name = "ReLU")
-
-			net, indices4, unpool_shape4 = max_pooling(net, kernel_size = 2, strides = 2, padding = "SAME")
-		
-		with tf.variable_scope("layer13"): # With Unpooling
-			net = max_unpooling(net, output_shape = unpool_shape4, indices = indices4)
-			
-			net = conv2D( net,
-			              kernel_size    = 3,
-			              strides        = 1, 
-			              output_channel = 512,
-			              initializer    = initializer, 
-			              padding        = "SAME", 
-			              scope          = "conv3x3")
-						  
-			net = batch_norm(net, is_training = is_training)
-							  
-			net = tf.nn.relu(features = net, name = "ReLU")										
-				
-		with tf.variable_scope("layer14"):
-			net = conv2D( net,
-			              kernel_size    = 3,
-			              strides        = 1, 
-			              output_channel = 512,
-			              initializer    = initializer, 
-			              padding        = "SAME", 
-			              scope          = "conv3x3")
-						  
-			net = batch_norm(net, is_training = is_training)
-							  
-			net = tf.nn.relu(features = net, name = "ReLU")
-		
-		with tf.variable_scope("layer15"):
-			net = conv2D( net,
-			              kernel_size    = 3,
-			              strides        = 1, 
-			              output_channel = 512,
-			              initializer    = initializer, 
-			              padding        = "SAME", 
-			              scope          = "conv3x3")
-						  
-			net = batch_norm(net, is_training = is_training)
-							  
-			net = tf.nn.relu(features = net, name = "ReLU")
-		
-		with tf.variable_scope("layer16"): # With Unpooling
-			net = max_unpooling(net, output_shape = unpool_shape3, indices = indices3)
-			
-			net = conv2D( net,
-			              kernel_size    = 3,
-			              strides        = 1, 
-			              output_channel = 512,
-			              initializer    = initializer, 
-			              padding        = "SAME", 
-			              scope          = "conv3x3")
-						  
-			net = batch_norm(net, is_training = is_training)
-							  
-			net = tf.nn.relu(features = net, name = "ReLU")										
-				
-		with tf.variable_scope("layer17"):
-			net = conv2D( net,
-			              kernel_size    = 3,
-			              strides        = 1, 
-			              output_channel = 512,
-			              initializer    = initializer, 
-			              padding        = "SAME", 
-			              scope          = "conv3x3")
-						  
-			net = batch_norm(net, is_training = is_training)
-							  
-			net = tf.nn.relu(features = net, name = "ReLU")
-		
-		with tf.variable_scope("layer18"):
-			net = conv2D( net,
-			              kernel_size    = 3,
-			              strides        = 1, 
-			              output_channel = 256,
-			              initializer    = initializer, 
-			              padding        = "SAME", 
-			              scope          = "conv3x3")
-						  
-			net = batch_norm(net, is_training = is_training)
-							  
-			net = tf.nn.relu(features = net, name = "ReLU")
-		
-		with tf.variable_scope("layer19"): # With Unpooling
-			net = max_unpooling(net, output_shape = unpool_shape2, indices = indices2)
-			
-			net = conv2D( net,
-			              kernel_size    = 3,
-			              strides        = 1, 
-			              output_channel = 256,
-			              initializer    = initializer, 
-			              padding        = "SAME", 
-			              scope          = "conv3x3")
-						  
-			net = batch_norm(net, is_training = is_training)
-							  
-			net = tf.nn.relu(features = net, name = "ReLU")										
-
-		with tf.variable_scope("layer20"):
-			net = conv2D( net,
-			              kernel_size    = 3,
-			              strides        = 1, 
-			              output_channel = 256,
-			              initializer    = initializer, 
-			              padding        = "SAME", 
-			              scope          = "conv3x3")
-						  
-			net = batch_norm(net, is_training = is_training)
-							  
-			net = tf.nn.relu(features = net, name = "ReLU")
-			
-		with tf.variable_scope("layer21"):
-			net = conv2D( net,
-			              kernel_size    = 3,
-			              strides        = 1, 
-			              output_channel = 128,
-			              initializer    = initializer, 
-			              padding        = "SAME", 
-			              scope          = "conv3x3")
-						  
-			net = batch_norm(net, is_training = is_training)
-							  
-			net = tf.nn.relu(features = net, name = "ReLU")
-
-		with tf.variable_scope("layer22"): # With Unpooling
-			net = max_unpooling(net, output_shape = unpool_shape1, indices = indices1)
-			
-			net = conv2D( net,
-			              kernel_size    = 3,
-			              strides        = 1, 
-			              output_channel = 128,
-			              initializer    = initializer, 
-			              padding        = "SAME", 
-			              scope          = "conv3x3")
-						  
-			net = batch_norm(net, is_training = is_training)
-							  
-			net = tf.nn.relu(features = net, name = "ReLU")										
-
-		with tf.variable_scope("layer23"):
-			net = conv2D( net,
-			              kernel_size    = 3,
-			              strides        = 1, 
-			              output_channel = 64,
-			              initializer    = initializer, 
-			              padding        = "SAME", 
-			              scope          = "conv3x3")
-						  
-			net = batch_norm(net, is_training = is_training)
-							  
-			net = tf.nn.relu(features = net, name = "ReLU")
-
-		with tf.variable_scope("layer24"): # With Unpooling
-			net = max_unpooling(net, output_shape = unpool_shape0, indices = indices0)
-			
-			net = conv2D( net,
-			              kernel_size    = 3,
-			              strides        = 1, 
-			              output_channel = 64,
-			              initializer    = initializer, 
-			              padding        = "SAME", 
-			              scope          = "conv3x3")
-						  
-			net = batch_norm(net, is_training = is_training)
-							  
-			net = tf.nn.relu(features = net, name = "ReLU")										
-			
-			net = tf.cond(is_training, lambda: tf.layers.dropout(net, 0.0), lambda: net)
-			
-		with tf.variable_scope("layer25"):
-			net = conv2D( net,
-			              kernel_size    = 3,
-			              strides        = 1, 
-			              output_channel = class_num,
-			              initializer    = initializer, 
-			              padding        = "SAME", 
-			              scope          = "conv3x3")
-						  
-			net = tf.nn.relu(features = net, name = "ReLU")
-	return net
+def ID_0550225(
+    net, 
+    is_training,
+    initializer,
+    class_num,
+    scope = None
+    ):
+    with tf.variable_scope(scope):
+        with tf.variable_scope("layer0"):
+            net = conv2D( net,
+                          kernel_size    = 3,
+                          strides        = 1, 
+                          output_channel = 64,
+                          initializer    = initializer, 
+                          padding        = "SAME", 
+                          scope          = "conv3x3")
+                        
+            net = batch_norm(net, scope = "layer0_bn")
+                            
+            net = tf.nn.relu(features = net, name = "ReLU")		
+                            
+        with tf.variable_scope("layer1"): # With Pooling
+            net = conv2D( net,
+                          kernel_size    = 3,
+                          strides        = 1, 
+                          output_channel = 64,
+                          initializer    = initializer, 
+                          padding        = "SAME", 
+                          scope          = "conv3x3")
+                        
+            net = batch_norm(net, scope = "layer1_bn")
+                            
+            net = tf.nn.relu(features = net, name = "ReLU")
+    
+            net, indices0, unpool_shape0 = max_pooling(net, kernel_size = 2, strides = 2, padding = "SAME")
+                                                        
+        with tf.variable_scope("layer2"): # With Unpooling
+            net = max_unpooling(net, output_shape = unpool_shape0, indices = indices0)
+            
+            net = conv2D( net,
+                          kernel_size    = 3,
+                          strides        = 1, 
+                          output_channel = 64,
+                          initializer    = initializer, 
+                          padding        = "SAME", 
+                          scope          = "conv3x3")
+                        
+            net = batch_norm(net, scope = "layer2_bn")
+                            
+            net = tf.nn.relu(features = net, name = "ReLU")										
+            
+            net = tf.cond(is_training, lambda: tf.layers.dropout(net, 0.9), lambda: net)
+            
+        with tf.variable_scope("layer3"):
+            net = conv2D( net,
+                          kernel_size    = 3,
+                          strides        = 1, 
+                          output_channel = class_num,
+                          initializer    = initializer, 
+                          padding        = "SAME", 
+                          scope          = "conv3x3")
+                        
+            net = tf.nn.relu(features = net, name = "ReLU")
+    return net
 
 
+# Here are some different types of convolution.
+# Hopefully, you can be easier to construct your designed model
+# but not limited by the unfamiliarity with the tensorflow
+#-------------------------------
+# (1) redisual bottleneck block
+# (2) dilated convolution
+# (3) depthwise block
+#-------------------------------
+def residual_bottleneck_block(
+    net,
+    kernel_size,
+    strides,
+    output_channel,
+    internal_channel,
+    initializer,
+    padding,
+    scope
+    ):
+    
+    with tf.variable_scope(scope):
+        
+        input_channel = net.get_shape().as_list()[-1]
+        
+        # -- shortcut --
+        if input_channel != output_channel:
+            shortcut = conv2D( net,
+                               kernel_size    = 1,
+                               strides        = 1, 
+                               output_channel = output_channel,
+                               initializer    = initializer, 
+                               padding        = padding, 
+                               scope          = "shortcut_conv")
+                               
+            shortcut = batch_norm(shortcut, scope = "shortcut_bn")
+        else:
+            shortcut = net
+        
+        # -- dimension reduction --
+        net = conv2D( net,
+                      kernel_size    = 1,
+                      strides        = 1, 
+                      output_channel = internal_channel,
+                      initializer    = initializer, 
+                      padding        = padding, 
+                      scope          = "1x1_reduction")
+        
+        net = batch_norm(net, scope = "1x1_reduction_bn")
+        
+        net = tf.nn.relu(features = net, name = "ReLU")
+        
+        # -- convolution --
+        net = conv2D( net,
+                      kernel_size    = kernel_size,
+                      strides        = strides, 
+                      output_channel = internal_channel,
+                      initializer    = initializer, 
+                      padding        = padding, 
+                      scope          = "conv")
+
+        net = batch_norm(net, scope = "conv_bn")
+        
+        net = tf.nn.relu(features = net, name = "ReLU")
+        
+        # -- dimension recovery --
+        net = conv2D( net,
+                      kernel_size    = 1,
+                      strides        = 1, 
+                      output_channel = output_channel,
+                      initializer    = initializer, 
+                      padding        = padding, 
+                      scope          = "1x1_recovery")              
+                      
+        net = batch_norm(net, scope = "1x1_recovery_bn")
+        
+        # -- add shortcut --
+        net = tf.add(net, shortcut)
+        
+        net = tf.nn.relu(features = net, name = "ReLU")
+        
+    return net
+    
+def dilated_conv2D(
+    net,
+    kernel_size,
+    rate, 
+    output_channel,
+    initializer = tf.contrib.layers.variance_scaling_initializer(), 
+    padding = "SAME", 
+    scope = None
+    ):
+    
+    input_channel = net.get_shape().as_list()[-1]
+    with tf.variable_scope(scope):
+        # Define Weights Variable
+        weights = tf.get_variable( name        = "weights", 
+                                   shape       = [kernel_size, kernel_size, input_channel, output_channel],
+                                   dtype       = tf.float32,
+                                   initializer = initializer)
+        # Define Biases Variable				
+        biases = tf.get_variable( name        = "biases", 
+                                  shape       = [output_channel],
+                                  dtype       = tf.float32,
+                                  initializer = initializer)
+        
+        tf.add_to_collection("weights", weights)
+        
+        # Dilated Convolution 
+        # https://www.tensorflow.org/api_docs/python/tf/nn/atrous_conv2d
+        net = tf.nn.atrous_conv2d( value   = net, 
+                                   filters = weights, 
+                                   rate    = rate, 
+                                   padding = padding,
+                                   name    = "dilated_conv")     
+    
+        # Add Biases
+        net = tf.nn.bias_add(net, biases)
+        
+    return net
+    
+def depthwise_block(
+    net,
+    kernel_size,
+    strides, 
+    output_channel,
+    initializer = tf.contrib.layers.variance_scaling_initializer(), 
+    padding = "SAME", 
+    scope = None
+    ):
+    
+    input_channel = net.get_shape().as_list()[-1]
+    with tf.variable_scope(scope):
+        # -- depthwise convolution --
+        # Define Weights Variable
+        weights = tf.get_variable( name        = "weights", 
+                                   shape       = [kernel_size, kernel_size, input_channel, 1],
+                                   dtype       = tf.float32,
+                                   initializer = initializer)
+        # Define Biases Variable				
+        biases = tf.get_variable( name        = "biases", 
+                                  shape       = [input_channel],
+                                  dtype       = tf.float32,
+                                  initializer = initializer)
+        
+        tf.add_to_collection("weights", weights)
+        
+        # Depthwise Convolution 
+        # https://www.tensorflow.org/api_docs/python/tf/nn/depthwise_conv2d
+        net = tf.nn.depthwise_conv2d( input   = net, 
+                                      filter  = weights, 
+                                      strides = [1, strides, strides, 1], 
+                                      padding = padding,
+                                      rate    = [1, 1],
+                                      name    = "depthwise_conv") 
+    
+        # Add Biases
+        net = tf.nn.bias_add(net, biases)
+        
+        net = batch_norm(net, scope = "depthwise_conv_bn")
+        
+        net = tf.nn.relu(features = net, name = "ReLU")
+        
+        # -- 1x1 convolution --
+        net = conv2D( net,
+                      kernel_size    = 1,
+                      strides        = 1, 
+                      output_channel = output_channel,
+                      initializer    = initializer, 
+                      padding        = padding, 
+                      scope          = "1x1_conv")
+
+        net = batch_norm(net, scope = "1x1_conv_bn")
+        
+        net = tf.nn.relu(features = net, name = "ReLU")
+        
+    return net
+  
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
