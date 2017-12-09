@@ -183,7 +183,7 @@ def your_own_model( # name it with "ID_{StudentID}"
     ):
     
     with tf.variable_scope(scope):
-    
+        net = net
     return net
 
 def ID_0550225(

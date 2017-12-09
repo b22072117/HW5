@@ -80,6 +80,7 @@ def main(argv=None):
     #    Model    #
     #-------------#
     net = xs
+
     # Call your model here
     prediction = model_call( net, 
                             is_training, 
