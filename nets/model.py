@@ -134,6 +134,7 @@ def max_unpooling(
 
 def batch_norm(
     net,
+    is_training,
     scope
     ):
     
@@ -203,7 +204,7 @@ def ID_0550225(
                           padding        = "SAME", 
                           scope          = "conv3x3")
                         
-            net = batch_norm(net, scope = "layer0_bn")
+            net = batch_norm(net, is_training, scope = "layer0_bn")
                             
             net = tf.nn.relu(features = net, name = "ReLU")		
                             
@@ -216,7 +217,7 @@ def ID_0550225(
                           padding        = "SAME", 
                           scope          = "conv3x3")
                         
-            net = batch_norm(net, scope = "layer1_bn")
+            net = batch_norm(net, is_training, scope = "layer1_bn")
                             
             net = tf.nn.relu(features = net, name = "ReLU")
     
@@ -233,7 +234,7 @@ def ID_0550225(
                           padding        = "SAME", 
                           scope          = "conv3x3")
                         
-            net = batch_norm(net, scope = "layer2_bn")
+            net = batch_norm(net, is_training, scope = "layer2_bn")
                             
             net = tf.nn.relu(features = net, name = "ReLU")										
             
@@ -267,6 +268,7 @@ def residual_bottleneck_block(
     output_channel,
     internal_channel,
     initializer,
+    is_training,
     padding,
     scope
     ):
@@ -285,7 +287,7 @@ def residual_bottleneck_block(
                                padding        = padding, 
                                scope          = "shortcut_conv")
                                
-            shortcut = batch_norm(shortcut, scope = "shortcut_bn")
+            shortcut = batch_norm(shortcut, is_training, scope = "shortcut_bn")
         else:
             shortcut = net
         
@@ -298,7 +300,7 @@ def residual_bottleneck_block(
                       padding        = padding, 
                       scope          = "1x1_reduction")
         
-        net = batch_norm(net, scope = "1x1_reduction_bn")
+        net = batch_norm(net, is_training, scope = "1x1_reduction_bn")
         
         net = tf.nn.relu(features = net, name = "ReLU")
         
@@ -311,7 +313,7 @@ def residual_bottleneck_block(
                       padding        = padding, 
                       scope          = "conv")
 
-        net = batch_norm(net, scope = "conv_bn")
+        net = batch_norm(net, is_training, scope = "conv_bn")
         
         net = tf.nn.relu(features = net, name = "ReLU")
         
@@ -324,7 +326,7 @@ def residual_bottleneck_block(
                       padding        = padding, 
                       scope          = "1x1_recovery")              
                       
-        net = batch_norm(net, scope = "1x1_recovery_bn")
+        net = batch_norm(net, is_training, scope = "1x1_recovery_bn")
         
         # -- add shortcut --
         net = tf.add(net, shortcut)
@@ -409,7 +411,7 @@ def depthwise_block(
         # Add Biases
         net = tf.nn.bias_add(net, biases)
         
-        net = batch_norm(net, scope = "depthwise_conv_bn")
+        net = batch_norm(net, is_training, scope = "depthwise_conv_bn")
         
         net = tf.nn.relu(features = net, name = "ReLU")
         
@@ -422,7 +424,7 @@ def depthwise_block(
                       padding        = padding, 
                       scope          = "1x1_conv")
 
-        net = batch_norm(net, scope = "1x1_conv_bn")
+        net = batch_norm(net, is_training, scope = "1x1_conv_bn")
         
         net = tf.nn.relu(features = net, name = "ReLU")
         
